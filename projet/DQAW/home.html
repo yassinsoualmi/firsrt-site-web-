@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login, Register, and Forgot Password</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: url('images.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        .perspective {
+            perspective: 1000px;
+            width: 420px;
+            height: 520px;
+            position: relative;
+        }
+
+        .cube {
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 1s ease-in-out;
+        }
+
+        .cube-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+            padding: 30px 40px;
+            backface-visibility: hidden;
+            backdrop-filter: blur(9px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .cube-face.front {
+            color: #fff;
+            transform: rotateX(0deg);
+        }
+
+        .cube-face.back {
+            color: #fff;
+            transform: rotateX(180deg);
+        }
+
+        .cube-face.forgot {
+            color: #fff;
+            transform: rotateX(90deg);
+        }
+
+        h1 {
+            font-size: 36px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .input-box {
+            position: relative;
+            width: 100%;
+            height: 50px;
+            margin: 30px 0;
+        }
+
+        .input-box input {
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            border: none;
+            outline: none;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 40px;
+            font-size: 16px;
+            color: #fff;
+            padding: 20px 45px 20px 20px;
+        }
+
+        .input-box input::placeholder {
+            color: #fff;
+        }
+
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14.5px;
+            margin: -15px 0 15px;
+        }
+
+        .remember-forgot label input {
+            accent-color: #fff;
+            margin-right: 3px;
+        }
+
+        .remember-forgot a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .remember-forgot a:hover {
+            text-decoration: underline;
+        }
+
+        .btn {
+            width: 100%;
+            height: 45px;
+            background: #fff;
+            border: none;
+            outline: none;
+            border-radius: 40px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            font-size: 16px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .register-link {
+            font-size: 14.5px;
+            text-align: center;
+            margin: 20px 0 15px;
+        }
+
+        .register-link p a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .register-link p a:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            color: red;
+        }
+
+        .success-message {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <div class="perspective">
+        <div class="cube" id="cube">
+            <!-- Login Form (Initial Page) -->
+            <div class="cube-face front">
+                <h1>Login</h1>
+                <form action="login.php" method="POST">
+                    <div class="input-box">
+                        <input type="email" name="email" placeholder="Email" required>
+                    </div>
+                    <div class="input-box">
+                        <input type="password" name="password" placeholder="Password" required>
+                    </div>
+                    <div class="remember-forgot">
+                        <label>
+                            <input type="checkbox" name="remember"> Remember me
+                        </label>
+                        <a href="#" id="toForgot">Forgot password?</a>
+                    </div>
+                    <button class="btn" type="submit">Login</button>
+                </form>
+                <div class="register-link">
+                    <p>Don't have an account? <a href="#" id="toRegister">Register</a></p>
+                </div>
+            </div>
+
+            <!-- Register Form -->
+            <div class="cube-face back">
+                <h1>Register</h1>
+                <form action="register.php" method="POST">
+                    <div class="input-box">
+                        <input type="text" name="username" placeholder="Username" required>
+                    </div>
+                    <div class="input-box">
+                        <input type="email" name="email" placeholder="Email" required>
+                    </div>
+                    <div class="input-box">
+                        <input type="password" name="password" placeholder="Password" required>
+                    </div>
+                    <div class="input-box">
+                        <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+                    </div>
+                    <button class="btn" type="submit">Register</button>
+                </form>
+                <div class="register-link">
+                    <p>Already have an account? <a href="#" id="toLogin">Login</a></p>
+                </div>
+            </div>
+
+            <!-- Forgot Password Form -->
+            <div class="cube-face forgot">
+                <h1>Reset Password</h1>
+                <form action="reset-password.php" method="POST">
+                    <div class="input-box">
+                        <input type="email" name="email" placeholder="Enter your email" required>
+                    </div>
+                    <button class="btn" type="submit">Send Reset Link</button>
+                </form>
+                <div class="register-link">
+                    <p><a href="#" id="toLoginFromForgot">Back to Login</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const cube = document.getElementById('cube');
+        const toLogin = document.getElementById('toLogin');
+        const toRegister = document.getElementById('toRegister');
+        const toForgot = document.getElementById('toForgot');
+        const toLoginFromForgot = document.getElementById('toLoginFromForgot');
+
+        // Rotate to register
+        toRegister.addEventListener('click', (e) => {
+            e.preventDefault();
+            cube.style.transform = 'rotateX(-180deg)';
+        });
+
+        // Rotate back to login
+        toLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            cube.style.transform = 'rotateX(0deg)';
+        });
+
+        // Rotate to forgot password
+        toForgot.addEventListener('click', (e) => {
+            e.preventDefault();
+            cube.style.transform = 'rotateX(90deg)';
+        });
+
+        // Rotate back to login from forgot password
+        toLoginFromForgot.addEventListener('click', (e) => {
+            e.preventDefault();
+            cube.style.transform = 'rotateX(0deg)';
+        });
+    </script>
+</body>
+</html>
